@@ -21,7 +21,7 @@ from __future__ import print_function
 
 import os
 
-from absl import flags
+# from absl import flags
 from absl import logging
 
 import tensorflow.compat.v2 as tf
@@ -30,9 +30,9 @@ from tcc.config import CONFIG
 from tcc.dataset_splits import DATASETS
 from tcc.preprocessors import preprocess_sequence
 
-FLAGS = flags.FLAGS
+# FLAGS = flags.FLAGS
 
-flags.DEFINE_integer('num_parallel_calls', 60, 'Number of parallel calls while'
+# flags.DEFINE_integer('num_parallel_calls', 60, 'Number of parallel calls while'
                      'preprocessing data on CPU.')
 
 
@@ -244,13 +244,13 @@ def sample_and_preprocess(video,
   video = tf.map_fn(
       tf.image.decode_jpeg,
       video,
-      parallel_iterations=FLAGS.num_parallel_calls,
+      parallel_iterations=60,
       dtype=tf.uint8)
   # Take images in range [0, 255] and normalize to [0, 1]
   video = tf.map_fn(
       normalize_input,
       video,
-      parallel_iterations=FLAGS.num_parallel_calls,
+      parallel_iterations=60,
       dtype=tf.float32)
   # Perform data-augmentation and return images in range [-1, 1]
   video = preprocess_input(video, augment)
@@ -337,7 +337,7 @@ def create_dataset(split, mode, batch_size=None, return_iterator=True):
       tfrecord_files = get_tfrecords(
           dataset_name, split, CONFIG.PATH_TO_TFRECORDS, per_class=per_class)
       dataset = tf.data.TFRecordDataset(
-          tfrecord_files, num_parallel_reads=FLAGS.num_parallel_calls)
+          tfrecord_files, num_parallel_reads=60)
 
       if (fraction != 1.0 and mode == 'train'):
         num_samples = max(1, int(fraction * DATASETS[dataset_name][split]))
@@ -358,10 +358,10 @@ def create_dataset(split, mode, batch_size=None, return_iterator=True):
     dataset = dataset.unbatch()
 
     dataset = dataset.map(decode,
-                          num_parallel_calls=FLAGS.num_parallel_calls)
+                          num_parallel_calls=60)
 
     dataset = dataset.map(preprocess_fn,
-                          num_parallel_calls=FLAGS.num_parallel_calls)
+                          num_parallel_calls=60)
 
     # drop_remainder adds batch size in shape else first dim remains as None.
     dataset = dataset.batch(batch_size, drop_remainder=True)
@@ -384,9 +384,9 @@ def create_one_epoch_dataset(dataset, split, mode, path_to_tfrecords):
   with tf.device('/cpu:0'):
     dataset = tf.data.TFRecordDataset(
         tfrecord_files,
-        num_parallel_reads=FLAGS.num_parallel_calls)
+        num_parallel_reads=60)
 
-    dataset = dataset.map(decode, num_parallel_calls=FLAGS.num_parallel_calls)
+    dataset = dataset.map(decode, num_parallel_calls=60)
 
     # pylint: disable=g-long-lambda
     if mode == 'train':
@@ -418,7 +418,7 @@ def create_one_epoch_dataset(dataset, split, mode, path_to_tfrecords):
 
     # pylint: enable=g-long-lambda
     dataset = dataset.map(preprocess_fn,
-                          num_parallel_calls=FLAGS.num_parallel_calls)
+                          num_parallel_calls=60)
 
     dataset = dataset.batch(batch_size)
     # Prefetch batches

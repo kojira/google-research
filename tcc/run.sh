@@ -17,8 +17,8 @@
 set -e
 set -x
 
-virtualenv -p python3 env
-source env/bin/activate
+# virtualenv -p python3 env
+# source env/bin/activate
 
 pip install -r tcc/requirements.txt
 

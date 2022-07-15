@@ -188,11 +188,13 @@ class ConvEmbedder(tf.keras.Model):
         kernel_regularizer=regularizers.l2(l2_reg_weight),
         bias_regularizer=regularizers.l2(l2_reg_weight))
 
-  def call(self, x, num_frames):
+  # def call(self, x, num_frames):
+  def call(self, x):
     base_dropout_rate = CONFIG.MODEL.CONV_EMBEDDER_MODEL.BASE_DROPOUT_RATE
     fc_dropout_rate = CONFIG.MODEL.CONV_EMBEDDER_MODEL.FC_DROPOUT_RATE
 
-    batch_size, total_num_steps, h, w, c = x.shape
+    batch_size, total_num_steps, h, w, c = x[0].shape
+    num_frames = x[1]
     num_context = total_num_steps // num_frames
     x = tf.reshape(x, [batch_size * num_frames, num_context, h, w, c])
 
@@ -261,9 +263,11 @@ class ConvGRUEmbedder(tf.keras.Model):
     dropout_rate = CONFIG.MODEL.CONVGRU_EMBEDDER_MODEL.DROPOUT_RATE
     self.dropout = layers.Dropout(dropout_rate)
 
-  def call(self, x, num_frames):
-    batch_size, num_steps, h, w, c = x.shape
-    x = tf.reshape(x, [batch_size * num_steps, h, w, c])
+  # def call(self, x, num_frames):
+  def call(self, x):
+    batch_size, num_steps, h, w, c = x[0].shape
+    num_frames = x[1]
+    x = tf.reshape(x[0], [batch_size * num_steps, h, w, c])
     # Pass through convolution layers
     for i, conv_layer in enumerate(self.conv_layers):
       x = self.dropout(x)
