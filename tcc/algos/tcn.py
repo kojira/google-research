@@ -26,6 +26,7 @@ from tcc.config import CONFIG
 from tcc.utils import get_cnn_feats
 from tcc.utils import set_learning_phase
 
+import numpy as np
 
 def _npairs_loss(labels, embeddings_anchor, embeddings_positive, reg_lambda):
   """Returns n-pairs metric loss."""
@@ -90,7 +91,8 @@ class TCN(Algorithm):
     else:
       num_steps = CONFIG.EVAL.NUM_FRAMES
 
-    embs = emb([cnn_feats, 2 * num_steps])
+    emb_inputs = np.array([cnn_feats, 2 * num_steps])
+    embs = emb(emb_inputs)
     embs = tf.stack(tf.split(embs, 2 * num_steps, axis=0), axis=1)
 
     return embs

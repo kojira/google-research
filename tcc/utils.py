@@ -393,7 +393,8 @@ def get_embeddings_dataset(model, iterator, frames_per_batch,
                                   num_steps=num_frames_per_step * num_steps,
                                   training=False)
 
-        emb_feats = emb([cnn_feats, num_steps])
+        emb_inputs = np.array([cnn_feats, num_steps])
+        emb_feats = emb(emb_inputs)
         logging.info('On sequence number %d, frames embedded %d', n,
                      curr_idx + num_steps)
         embs.append(emb_feats.numpy())
