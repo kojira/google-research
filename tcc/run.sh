@@ -28,7 +28,7 @@ tcc/dataset_preparation/download_pouring_data.sh
 wget -P /tmp/ https://github.com/keras-team/keras-applications/releases/download/resnet/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5
 
 # Make empty directory for logs.
-mkdir /tmp/alignment_logs
+mkdir -p /tmp/alignment_logs
 # Copy over demo config to folder.
 cp tcc/configs/demo.yml /tmp/alignment_logs/config.yml
 # Runs training for 10 iterations on the Pouring dataset.

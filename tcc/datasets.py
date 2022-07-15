@@ -33,7 +33,7 @@ from tcc.preprocessors import preprocess_sequence
 # FLAGS = flags.FLAGS
 
 # flags.DEFINE_integer('num_parallel_calls', 60, 'Number of parallel calls while'
-                     'preprocessing data on CPU.')
+#                      'preprocessing data on CPU.')
 
 
 def normalize_input(frame, new_max=1., new_min=0.0, old_max=255.0, old_min=0.0):
