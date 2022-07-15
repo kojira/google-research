@@ -197,7 +197,7 @@ class ConvEmbedder(tf.keras.Model):
     batch_size, total_num_steps, h, w, c = x.shape
     print("shape:",x.shape)
     if num_frames is None:
-      num_frames = CONFIG.TRAIN.NUM_FRAMES
+      num_frames = self.num_steps
     print("num_frames:",num_frames)
     num_context = total_num_steps // num_frames
     print("num_context:",num_context)
