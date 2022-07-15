@@ -74,7 +74,7 @@ class Algorithm(tf.keras.Model):
 
     cnn_feats = get_cnn_feats(cnn, data, training)
 
-    emb_inputs = np.array([cnn_feats, num_steps],dtype=tf.float32)
+    emb_inputs = np.array([cnn_feats, num_steps], dtype="float32")
     embs = emb(emb_inputs)
     channels = embs.shape[-1]
     embs = tf.reshape(embs, [-1, num_steps, channels])
