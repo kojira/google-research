@@ -257,10 +257,10 @@ def setup_train_dir(logdir):
     CONFIG.update(config_dict)
 
   train_logs_dir = os.path.join(logdir, 'train_logs')
-  if os.path.exists(train_logs_dir) and not FLAGS.force_train:
-    raise ValueError('You might be overwriting a directory that already '
-                     'has train_logs. Please provide a new logdir name in '
-                     'config or pass --force_train while launching script.')
+  # if os.path.exists(train_logs_dir) and not FLAGS.force_train:
+  #   raise ValueError('You might be overwriting a directory that already '
+  #                    'has train_logs. Please provide a new logdir name in '
+  #                    'config or pass --force_train while launching script.')
   tf.io.gfile.makedirs(train_logs_dir)
 
 
