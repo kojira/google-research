@@ -195,6 +195,9 @@ class ConvEmbedder(tf.keras.Model):
     fc_dropout_rate = CONFIG.MODEL.CONV_EMBEDDER_MODEL.FC_DROPOUT_RATE
 
     batch_size, total_num_steps, h, w, c = x.shape
+    if batch_size is None:
+      batch_size = 1
+
     print("shape:",x.shape)
     if num_frames is None:
       num_frames = self.num_steps
