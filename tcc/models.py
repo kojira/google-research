@@ -188,15 +188,17 @@ class ConvEmbedder(tf.keras.Model):
         kernel_regularizer=regularizers.l2(l2_reg_weight),
         bias_regularizer=regularizers.l2(l2_reg_weight))
 
-  # def call(self, x, num_frames):
-  def call(self, x):
+    self.num_steps = CONFIG.TRAIN.NUM_FRAMES
+
+  def call(self, x, num_frames=None):
     base_dropout_rate = CONFIG.MODEL.CONV_EMBEDDER_MODEL.BASE_DROPOUT_RATE
     fc_dropout_rate = CONFIG.MODEL.CONV_EMBEDDER_MODEL.FC_DROPOUT_RATE
 
     batch_size, total_num_steps, h, w, c = x.shape
     print("shape:",x.shape)
-    num_frames = CONFIG.TRAIN.NUM_FRAMES
-    print("CONFIG.TRAIN.NUM_FRAMES:",CONFIG.TRAIN.NUM_FRAMES)
+    if num_frames is None:
+      num_frames = CONFIG.TRAIN.NUM_FRAMES
+    print("num_frames:",num_frames)
     num_context = total_num_steps // num_frames
     print("num_context:",num_context)
     x = tf.reshape(x, [batch_size * num_frames, num_context, h, w, c])
@@ -266,10 +268,10 @@ class ConvGRUEmbedder(tf.keras.Model):
     dropout_rate = CONFIG.MODEL.CONVGRU_EMBEDDER_MODEL.DROPOUT_RATE
     self.dropout = layers.Dropout(dropout_rate)
 
-  # def call(self, x, num_frames):
-  def call(self, x):
+  def call(self, x, num_frames=None):
     batch_size, num_steps, h, w, c = x.shape
-    num_frames = CONFIG.TRAIN.NUM_FRAMES
+    if num_frames is None:
+      num_frames = CONFIG.TRAIN.NUM_FRAMES
     x = tf.reshape(x, [batch_size * num_steps, h, w, c])
     # Pass through convolution layers
     for i, conv_layer in enumerate(self.conv_layers):

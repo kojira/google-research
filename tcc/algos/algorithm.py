@@ -30,8 +30,6 @@ from tcc.models import get_model
 from tcc.utils import get_cnn_feats
 from tcc.utils import set_learning_phase
 
-import numpy as np
-
 FLAGS = flags.FLAGS
 
 
@@ -74,7 +72,7 @@ class Algorithm(tf.keras.Model):
 
     cnn_feats = get_cnn_feats(cnn, data, training)
 
-    embs = emb(cnn_feats)
+    embs = emb(cnn_feats, num_steps)
     channels = embs.shape[-1]
     embs = tf.reshape(embs, [-1, num_steps, channels])
 
