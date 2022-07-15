@@ -193,8 +193,8 @@ class ConvEmbedder(tf.keras.Model):
     base_dropout_rate = CONFIG.MODEL.CONV_EMBEDDER_MODEL.BASE_DROPOUT_RATE
     fc_dropout_rate = CONFIG.MODEL.CONV_EMBEDDER_MODEL.FC_DROPOUT_RATE
 
-    batch_size, total_num_steps, h, w, c = x[0].shape
-    num_frames = x[1]
+    batch_size, total_num_steps, h, w, c = x.shape
+    num_frames = CONFIG.TRAIN.NUM_FRAMES
     num_context = total_num_steps // num_frames
     x = tf.reshape(x, [batch_size * num_frames, num_context, h, w, c])
 
@@ -265,9 +265,9 @@ class ConvGRUEmbedder(tf.keras.Model):
 
   # def call(self, x, num_frames):
   def call(self, x):
-    batch_size, num_steps, h, w, c = x[0].shape
-    num_frames = x[1]
-    x = tf.reshape(x[0], [batch_size * num_steps, h, w, c])
+    batch_size, num_steps, h, w, c = x.shape
+    num_frames = CONFIG.TRAIN.NUM_FRAMES
+    x = tf.reshape(x, [batch_size * num_steps, h, w, c])
     # Pass through convolution layers
     for i, conv_layer in enumerate(self.conv_layers):
       x = self.dropout(x)

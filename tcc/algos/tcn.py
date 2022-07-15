@@ -91,9 +91,10 @@ class TCN(Algorithm):
     else:
       num_steps = CONFIG.EVAL.NUM_FRAMES
 
-    emb_inputs = np.array([cnn_feats, 2 * num_steps])
+    num_frames = CONFIG.TRAIN.NUM_FRAMES
     embs = emb(emb_inputs)
-    embs = tf.stack(tf.split(embs, 2 * num_steps, axis=0), axis=1)
+    # embs = tf.stack(tf.split(embs, 2 * num_steps, axis=0), axis=1)
+    embs = tf.stack(tf.split(embs, num_frames, axis=0), axis=1)
 
     return embs
 
