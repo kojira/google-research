@@ -198,12 +198,12 @@ class ConvEmbedder(tf.keras.Model):
     if batch_size is None:
       batch_size = 1
 
-    print("shape:",x.shape)
+    tf.print("shape:",x.shape)
     if num_frames is None:
       num_frames = self.num_steps
-    print("num_frames:",num_frames)
+    tf.print("num_frames:",num_frames)
     num_context = total_num_steps // num_frames
-    print("num_context:",num_context)
+    tf.print("num_context:",num_context)
     x = tf.reshape(x, [batch_size * num_frames, num_context, h, w, c])
 
     # Dropout on output tensor from base.
