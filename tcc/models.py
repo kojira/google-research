@@ -194,8 +194,11 @@ class ConvEmbedder(tf.keras.Model):
     fc_dropout_rate = CONFIG.MODEL.CONV_EMBEDDER_MODEL.FC_DROPOUT_RATE
 
     batch_size, total_num_steps, h, w, c = x.shape
+    print("shape:",x.shape)
     num_frames = CONFIG.TRAIN.NUM_FRAMES
+    print("CONFIG.TRAIN.NUM_FRAMES:",CONFIG.TRAIN.NUM_FRAMES)
     num_context = total_num_steps // num_frames
+    print("num_context:",num_context)
     x = tf.reshape(x, [batch_size * num_frames, num_context, h, w, c])
 
     # Dropout on output tensor from base.
